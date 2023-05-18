@@ -22,7 +22,8 @@ clock = pygame.time.Clock()
 
 # Load the images
 help_button_image = pygame.image.load("helpbutton.png")
-start_game_button_image = pygame.image.load("startgame.png")
+start_game_button = pygame.image.load("Menu Buttons\Large Buttons\Large Buttons\Start Button.png")
+start_game_button_image = pygame.transform.scale(start_game_button, (200, 75))
 car_image = pygame.image.load("car.png")
 car_width, car_height = car_image.get_rect().size
 carbomb_image = pygame.image.load("carbomb.png")
@@ -88,8 +89,8 @@ class Button():
         #draw button on screen
         screen.blit(self.image, (self.rect.x, self.rect.y))
 
-start_button = Button(355, 200, start_game_button_image)
-help_button = Button(355, 270, help_button_image)
+start_button = Button(280, 150, start_game_button_image)
+help_button = Button(300, 270, help_button_image)
 # Set the game loop
 colourcounter = 499
 running = True
@@ -109,26 +110,11 @@ while start_game:
     start_button.draw()
     help_button.draw()
 
-    button_colour = (50, 150, 50)
-    mouse = pygame.mouse.get_pos()
-    if 250 + 300 > mouse[0] > 250 and 100 + 80 > mouse[1] > 100:
-        pygame.draw.rect(screen, bright_green, pygame.Rect(250, 100, 300, 80))
-    else:
-        pygame.draw.rect(screen, green, pygame.Rect(250, 100, 300, 80))
-
     titletext = start_game_font.render(
         "WELCOME TO ROAD RAGE", True, (100, 150, 255))
 
-    start_game_text = start_game_font.render(
-        "Play", True, (0, 0, 0))
-
-    start_game_rect = start_game_text.get_rect()
-    start_game_rect.center = (screen_width // 2, screen_height // 2)
-
-    screen.blit(start_game_text, (355, 120))
+ 
     screen.blit(titletext, (105, 20))
-
-    print(mouse)
     pygame.display.flip()
 
 
