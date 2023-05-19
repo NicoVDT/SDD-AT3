@@ -22,7 +22,7 @@ clock = pygame.time.Clock()
 
 # Load the images
 exit_button_image = pygame.image.load("Menu Buttons\Large Buttons\Large Buttons\Exit Button.png")
-
+help_button_image =  pygame.image.load("Menu Buttons\Large Buttons\Large Buttons\Help Button.png")
 start_game_hover = pygame.image.load("Menu Buttons\Large Buttons\Large Buttons\StartButtonhover.png")
 
 start_game_button_image = pygame.image.load("Menu Buttons\Large Buttons\Large Buttons\Start Button.png")
@@ -83,10 +83,12 @@ def crashnoise(carbomb_image):
     pygame.mixer.music.play()
 
 class Button():
-    def __init__(self, x, y, image, scale):
+    def __init__(self, x, y, image, scale, hoverimage = None):
         width = image.get_width()
         height = image.get_height()
         self.scale = scale
+        self.hoverimage = hoverimage
+        self.originalimage = image
         self._image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
         self.rect = self.image.get_rect()
         self.rect.topleft = (x,y)
@@ -108,9 +110,11 @@ class Button():
         #check mouse is over button and clicked
 
         if self.rect.collidepoint(pos):
-            start_button.image = start_game_hover
+            if self.hoverimage != None:
+                self.image = self.hoverimage
         else:
-            start_button.image = start_game_button_image
+            if self.hoverimage != None:
+                self.image = self.originalimage
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
                 self.clicked = True 
                 action = True
@@ -120,7 +124,8 @@ class Button():
 
         return action
 exit_button = Button(265, 275, exit_button_image, 0.4)
-start_button = Button(265, 100, start_game_button_image, 0.4)
+start_button = Button(265, 100, start_game_button_image, 0.4, hoverimage=start_game_hover)
+help_button = Button(265, 188, help_button_image, 0.4)
 # Set the game loop
 running = True
 start_game = True
@@ -139,10 +144,16 @@ while start_game:
     
     
     if start_button.draw():
+        print("Exiting")
         exit()
 
     if exit_button.draw():
         start_game = False
+
+    if help_button.draw():
+        print("exiting help")
+        exit()
+
        
 
 
