@@ -35,7 +35,16 @@ help_button_image = pygame.image.load(
 start_game_button_image = pygame.image.load(
     "Menu Buttons\Large Buttons\Large Buttons\Start Button.png")
 back_button_image = pygame.image.load(
-    "Menu Buttons\Large Buttons\Large Buttons\Help Button.png")
+    "Menu Buttons\Square Buttons\Square Buttons\Return Square Button.png")
+
+up_image = pygame.image.load("Menu Buttons\Square Buttons\Square Buttons\Up Square Button.png")
+down_image = pygame.image.load("Menu Buttons\Square Buttons\Square Buttons\Down Square Button.png")
+left_image = pygame.image.load("Menu Buttons\Square Buttons\Square Buttons\Back Square Button.png")
+right_image = pygame.image.load("Menu Buttons\Square Buttons\Square Buttons\Next Square Button.png")
+
+
+
+
 
 car_image = pygame.image.load("car.png")
 car_width, car_height = car_image.get_rect().size
@@ -92,10 +101,11 @@ def controls():
     start_game_font = pygame.font.Font(None, 65)
     control_title = start_game_font.render(
         "Choose your Controls", True, (100, 150, 255))
+    
     if back_button.draw():
         global currentscreen
         currentscreen = "menu"
-    screen.blit(control_title, (105, 35))
+    screen.blit(control_title, (150, 35))
     pygame.display.flip()
 
 
@@ -172,6 +182,10 @@ control_button = Button(265, 278, control_button_image, 0.4)
 exit_button = Button(265, 365, exit_button_image, 0.4)
 mute_button = Button(10, 10, mute_button_image, 0.4)
 back_button = Button(10, 10, back_button_image, 0.4)
+up_key = Button(150, 150, up_image, 0.4)
+down_key = Button(150, 180,down_image, 0.4)
+left_key = Button(120, 180, left_image, 0.4)
+right_key = Button(210, 180,right_image, 0.4)
 
 # Set the game loop
 running = True
