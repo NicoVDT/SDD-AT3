@@ -34,6 +34,8 @@ help_button_image = pygame.image.load(
     "Menu Buttons\Large Buttons\Large Buttons\Help Button.png")
 start_game_button_image = pygame.image.load(
     "Menu Buttons\Large Buttons\Large Buttons\Start Button.png")
+back_button_image = pygame.image.load(
+    "Menu Buttons\Large Buttons\Large Buttons\Help Button.png")
 
 car_image = pygame.image.load("car.png")
 car_width, car_height = car_image.get_rect().size
@@ -54,7 +56,8 @@ object_width, object_height = object_image.get_rect().size
 # Set the font
 font = pygame.font.Font(None, 36)
 
-# Load the sounds
+
+currentscreen: str
 
 
 def menu():
@@ -70,7 +73,8 @@ def menu():
         exit()
 
     if control_button.draw():
-        controls()
+        global currentscreen
+        currentscreen = "controls"
 
     if mute_button.draw():
         print("Audio has been muted")
@@ -88,8 +92,10 @@ def controls():
     start_game_font = pygame.font.Font(None, 65)
     control_title = start_game_font.render(
         "Choose your Controls", True, (100, 150, 255))
+    if back_button.draw():
+        global currentscreen
+        currentscreen = "menu"
     screen.blit(control_title, (105, 35))
-    print()
     pygame.display.flip()
 
 
@@ -165,6 +171,7 @@ help_button = Button(265, 188, help_button_image, 0.4)
 control_button = Button(265, 278, control_button_image, 0.4)
 exit_button = Button(265, 365, exit_button_image, 0.4)
 mute_button = Button(10, 10, mute_button_image, 0.4)
+back_button = Button(10, 10, back_button_image, 0.4)
 
 # Set the game loop
 running = True
@@ -174,6 +181,8 @@ start_game = False
 def startloop():
     global start_game
     start_game = False
+    global currentscreen
+    currentscreen = "menu"
     while not start_game:
         # Handle the events
         for event in pygame.event.get():
@@ -184,7 +193,11 @@ def startloop():
 
         # Draw the screen
         screen.fill(white)
-        menu()
+        match currentscreen:
+            case "menu":
+                menu()
+            case "controls":
+                controls()
 
 
 def gameloop():
