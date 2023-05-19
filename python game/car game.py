@@ -21,9 +21,12 @@ white = (255, 255, 255)
 clock = pygame.time.Clock()
 
 # Load the images
-help_button_image = pygame.image.load("helpbutton.png")
-start_game_button = pygame.image.load("Menu Buttons\Large Buttons\Large Buttons\Start Button.png")
-start_game_button_image = pygame.transform.scale(start_game_button, (200, 75))
+exit_button_image = pygame.image.load("Menu Buttons\Large Buttons\Large Buttons\Exit Button.png")
+
+start_game_hover = pygame.image.load("Menu Buttons\Large Buttons\Large Buttons\StartButtonhover.png")
+
+start_game_button_image = pygame.image.load("Menu Buttons\Large Buttons\Large Buttons\Start Button.png")
+
 car_image = pygame.image.load("car.png")
 car_width, car_height = car_image.get_rect().size
 carbomb_image = pygame.image.load("carbomb.png")
@@ -80,19 +83,45 @@ def crashnoise(carbomb_image):
     pygame.mixer.music.play()
 
 class Button():
-    def __init__(self, x, y, image):
-        self.image = image
+    def __init__(self, x, y, image, scale):
+        width = image.get_width()
+        height = image.get_height()
+        self.scale = scale
+        self._image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
         self.rect = self.image.get_rect()
         self.rect.topleft = (x,y)
+        self.clicked = False
+    def image_set(self, image):
+        width = image.get_width()
+        height = image.get_height()
+        self._image = pygame.transform.scale(image, (int(width * self.scale), int(height * self.scale)))
+    def image_get(self):
+        return self._image
+    image = property(image_get, image_set)
 
     def draw(self):
         #draw button on screen
+        action = False
+       
+        #get mouse postion 
+        pos = pygame.mouse.get_pos()
+        #check mouse is over button and clicked
+
+        if self.rect.collidepoint(pos):
+            start_button.image = start_game_hover
+        else:
+            start_button.image = start_game_button_image
+            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+                self.clicked = True 
+                action = True
+        if pygame.mouse.get_pressed()[0] == 0:
+            self.clicked = False
         screen.blit(self.image, (self.rect.x, self.rect.y))
 
-start_button = Button(280, 150, start_game_button_image)
-help_button = Button(300, 270, help_button_image)
+        return action
+exit_button = Button(265, 275, exit_button_image, 0.4)
+start_button = Button(265, 100, start_game_button_image, 0.4)
 # Set the game loop
-colourcounter = 499
 running = True
 start_game = True
 while start_game:
@@ -101,20 +130,27 @@ while start_game:
         if event.type == pygame.QUIT:
             start_game = False
             running = False
-        if event.type == pygame.MOUSEBUTTONDOWN:
+        #if event.type == pygame.MOUSEBUTTONDOWN:
             start_game = False
 
     # Draw the screen
     start_game_font = pygame.font.Font(None, 65)
     screen.fill(white)
-    start_button.draw()
-    help_button.draw()
+    
+    
+    if start_button.draw():
+        exit()
+
+    if exit_button.draw():
+        start_game = False
+       
+
 
     titletext = start_game_font.render(
         "WELCOME TO ROAD RAGE", True, (100, 150, 255))
 
  
-    screen.blit(titletext, (105, 20))
+    screen.blit(titletext, (105, 35))
     pygame.display.flip()
 
 
