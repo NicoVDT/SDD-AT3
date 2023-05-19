@@ -21,10 +21,11 @@ white = (255, 255, 255)
 clock = pygame.time.Clock()
 
 # Load the images
-exit_button_image = pygame.image.load("Menu Buttons\Large Buttons\Large Buttons\Exit Button.png")
-help_button_image =  pygame.image.load("Menu Buttons\Large Buttons\Large Buttons\Help Button.png")
 start_game_hover = pygame.image.load("Menu Buttons\Large Buttons\Large Buttons\StartButtonhover.png")
 
+control_button_image = pygame.image.load("Menu Buttons\Large Buttons\Large Buttons\Exit Button.png")
+exit_button_image = pygame.image.load("Menu Buttons\Large Buttons\Large Buttons\Exit Button.png")
+help_button_image =  pygame.image.load("Menu Buttons\Large Buttons\Large Buttons\Help Button.png")
 start_game_button_image = pygame.image.load("Menu Buttons\Large Buttons\Large Buttons\Start Button.png")
 
 car_image = pygame.image.load("car.png")
