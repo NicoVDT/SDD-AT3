@@ -112,12 +112,13 @@ class Button():
         if self.rect.collidepoint(pos):
             if self.hoverimage != None:
                 self.image = self.hoverimage
+            if pygame.mouse.get_pressed()[0] and self.clicked == False:
+                self.clicked = True 
+                action = True
         else:
             if self.hoverimage != None:
                 self.image = self.originalimage
-            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
-                self.clicked = True 
-                action = True
+
         if pygame.mouse.get_pressed()[0] == 0:
             self.clicked = False
         screen.blit(self.image, (self.rect.x, self.rect.y))
@@ -128,15 +129,15 @@ start_button = Button(265, 100, start_game_button_image, 0.4, hoverimage=start_g
 help_button = Button(265, 188, help_button_image, 0.4)
 # Set the game loop
 running = True
-start_game = True
-while start_game:
+start_game = False
+while not start_game:
     # Handle the events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            start_game = False
+            start_game = True
             running = False
         #if event.type == pygame.MOUSEBUTTONDOWN:
-            start_game = False
+            #start_game = True
 
     # Draw the screen
     start_game_font = pygame.font.Font(None, 65)
@@ -144,11 +145,10 @@ while start_game:
     
     
     if start_button.draw():
-        print("Exiting")
-        exit()
+        start_game = True
 
     if exit_button.draw():
-        start_game = False
+        exit()
 
     if help_button.draw():
         print("exiting help")
