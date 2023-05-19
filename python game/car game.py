@@ -23,7 +23,7 @@ clock = pygame.time.Clock()
 # Load the images
 start_game_hover = pygame.image.load("Menu Buttons\Large Buttons\Large Buttons\StartButtonhover.png")
 
-control_button_image = pygame.image.load("Menu Buttons\Large Buttons\Large Buttons\Exit Button.png")
+control_button_image = pygame.image.load("Menu Buttons\Large Buttons\Large Buttons\Controls Button.png")
 exit_button_image = pygame.image.load("Menu Buttons\Large Buttons\Large Buttons\Exit Button.png")
 help_button_image =  pygame.image.load("Menu Buttons\Large Buttons\Large Buttons\Help Button.png")
 start_game_button_image = pygame.image.load("Menu Buttons\Large Buttons\Large Buttons\Start Button.png")
@@ -125,9 +125,12 @@ class Button():
         screen.blit(self.image, (self.rect.x, self.rect.y))
 
         return action
-exit_button = Button(265, 275, exit_button_image, 0.4)
+
 start_button = Button(265, 100, start_game_button_image, 0.4, hoverimage=start_game_hover)
 help_button = Button(265, 188, help_button_image, 0.4)
+control_button = Button(265, 278, control_button_image, 0.4)
+exit_button = Button(265, 355, exit_button_image, 0.4)
+
 # Set the game loop
 running = True
 start_game = False
@@ -154,6 +157,9 @@ while not start_game:
     if help_button.draw():
         print("exiting help")
         exit()
+
+    if control_button.draw():
+        print("Not Finished ")
 
        
 
