@@ -102,6 +102,14 @@ def controls():
     start_game_font = pygame.font.Font(None, 65)
     control_title = start_game_font.render(
         "Choose your Controls", True, (100, 150, 255))
+    if left_key.draw():
+        pass
+    if right_key.draw():
+        pass
+    if up_key.draw():
+        pass
+    if down_key.draw():
+        pass
 
     if back_button.draw():
         global currentscreen
@@ -176,6 +184,7 @@ class Button():
         return action
 
 
+# Menu Screen
 start_button = Button(265, 100, start_game_button_image,
                       0.4, hoverimage=start_game_hover)
 help_button = Button(265, 188, help_button_image, 0.4)
@@ -183,10 +192,12 @@ control_button = Button(265, 278, control_button_image, 0.4)
 exit_button = Button(265, 365, exit_button_image, 0.4)
 mute_button = Button(10, 10, mute_button_image, 0.4)
 back_button = Button(10, 10, back_button_image, 0.4)
-up_key = Button(150, 150, up_image, 0.4)
-down_key = Button(150, 180, down_image, 0.4)
-left_key = Button(120, 180, left_image, 0.4)
-right_key = Button(210, 180, right_image, 0.4)
+
+# Control screen
+up_key = Button(550, 200, up_image, 0.4)
+down_key = Button(550, 300, down_image, 0.4)
+left_key = Button(450, 300, left_image, 0.4)
+right_key = Button(650, 300, right_image, 0.4)
 
 # Set the game loop
 running = True
