@@ -146,13 +146,36 @@ def controls():
     control_title = start_game_font.render(
         "Choose your Controls", True, (100, 150, 255))
     if left_key.draw():
-        pass
+        try:
+            keys = pygame.key.get_pressed()
+            prefs.left = keys.index(True)
+            print(prefs.left)
+        except ValueError:
+            print("Oops, No key was being held down.")
+
     if right_key.draw():
-        pass
+        try:
+            keys = pygame.key.get_pressed()
+            prefs.right = keys.index(True)
+            print(prefs.right)
+        except ValueError:
+            print("Oops, No key was being held down.")
+
     if up_key.draw():
-        pass
+        try:
+            keys = pygame.key.get_pressed()
+            prefs.up = keys.index(True)
+            print(prefs.up)
+        except ValueError:
+            print("Oops, No key was being held down.")
+
     if down_key.draw():
-        pass
+        try:
+            keys = pygame.key.get_pressed()
+            prefs.down = keys.index(True)
+            print(prefs.down)
+        except ValueError:
+            print("Oops, No key was being held down.")
 
     if back_button.draw():
         global currentscreen
@@ -177,6 +200,19 @@ def crashscreen(carbomb_image: pygame.surface.Surface, car_x: int, car_y: int):
     screen.blit(car_image, (car_x - 16, car_y - 20))
     pygame.display.flip()
     pygame.time.wait(3000)
+
+
+class Preferences():
+    def __init__(self):
+        self.up: int = pygame.K_UP
+        self.down: int = pygame.K_DOWN
+        self.left: int = pygame.K_LEFT
+        self.right: int = pygame.K_RIGHT
+        self.audioEnabled: bool = True
+        self.soundsEnabled: bool = True
+
+
+prefs = Preferences()
 
 
 class Button():
