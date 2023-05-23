@@ -55,7 +55,9 @@ music_button_image = pygame.image.load(
 music_mute_button_image = pygame.image.load(
     "Menu Buttons/Square Buttons/Square Buttons/Music Square Button muted.png")
 
-background_image = pygame.image.load("Background.png")
+original_background_image = pygame.image.load("Background.png")
+background_image = pygame.transform.scale(
+    original_background_image, (800, 600))
 
 up_image = pygame.image.load(
     r"Menu Buttons/Square Buttons/Square Buttons/Up Square Button.png")
@@ -92,7 +94,7 @@ music_on = True
 
 
 def menu():
-    screen.blit(background_image, (105, 35))
+    screen.blit(background_image, (0, 0))
     if start_button.draw():
         global start_game
         start_game = True
