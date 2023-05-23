@@ -4,7 +4,6 @@ import time
 # Initialize Pygame
 pygame.init()
 
-# Set the screen size
 screen_width = 800
 screen_height = 600
 screen = pygame.display.set_mode((screen_width, screen_height))
@@ -21,30 +20,51 @@ white = (255, 255, 255)
 clock = pygame.time.Clock()
 
 # Load the images
+control_button_hover = pygame.image.load(
+    "Menu Buttons/Large Buttons/Large Buttons/Controls Button  Hover.png")
 start_game_hover = pygame.image.load(
-    "Menu Buttons\Large Buttons\Large Buttons\StartButtonhover.png")
+    "Menu Buttons/Large Buttons/Large Buttons/StartButtonhover.png")
+exit_button_hover = pygame.image.load(
+    "Menu Buttons/Large Buttons/Large Buttons/Exit Button Hover.png")
+back_button_hover = pygame.image.load(
+    "Menu Buttons/Square Buttons/Square Buttons/Return Square Button hover.png")
+help_button_hover = pygame.image.load(
+    "Menu Buttons/Square Buttons/Square Buttons/Questionmark Square Button hover.png")
+mute_button_hover = pygame.image.load(
+    "Menu Buttons/Square Buttons/Square Buttons/Audio Square Button hover.png")
+music_button_hover = pygame.image.load(
+    "Menu Buttons/Square Buttons/Square Buttons/Music Square Button hover.png")
 
 mute_button_image = pygame.image.load(
-    "Menu Buttons\Square Buttons\Square Buttons\Audio Square Button.png")
+    "Menu Buttons/Square Buttons/Square Buttons/Audio Square Button.png")
+muted_button_image = pygame.image.load(
+    "Menu Buttons/Square Buttons/Square Buttons/Audio Square Button muted.png")
 control_button_image = pygame.image.load(
-    "Menu Buttons\Large Buttons\Large Buttons\Controls Button.png")
+    "Menu Buttons/Large Buttons/Large Buttons/Controls Button.png")
 exit_button_image = pygame.image.load(
-    "Menu Buttons\Large Buttons\Large Buttons\Exit Button.png")
+    "Menu Buttons/Large Buttons/Large Buttons/Exit Button.png")
 help_button_image = pygame.image.load(
-    "Menu Buttons\Large Buttons\Large Buttons\Help Button.png")
+    "Menu Buttons/Square Buttons/Square Buttons/Questionmark Square Button.png")
 start_game_button_image = pygame.image.load(
-    "Menu Buttons\Large Buttons\Large Buttons\Start Button.png")
+    "Menu Buttons/Large Buttons/Large Buttons/Start Button.png")
 back_button_image = pygame.image.load(
-    "Menu Buttons\Square Buttons\Square Buttons\Return Square Button.png")
+    "Menu Buttons/Square Buttons/Square Buttons/Return Square Button.png")
+music_button_image = pygame.image.load(
+    "Menu Buttons/Square Buttons/Square Buttons/Music Square Button.png")
+
+music_mute_button_image = pygame.image.load(
+    "Menu Buttons/Square Buttons/Square Buttons/Music Square Button muted.png")
+
+background_image = pygame.image.load("Background.png")
 
 up_image = pygame.image.load(
-    r"Menu Buttons\Square Buttons\Square Buttons\Up Square Button.png")
+    r"Menu Buttons/Square Buttons/Square Buttons/Up Square Button.png")
 down_image = pygame.image.load(
-    r"Menu Buttons\Square Buttons\Square Buttons\Down Square Button.png")
+    "Menu Buttons/Square Buttons/Square Buttons/Down Square Button.png")
 left_image = pygame.image.load(
-    r"Menu Buttons\Square Buttons\Square Buttons\Back Square Button.png")
+    "Menu Buttons/Square Buttons/Square Buttons/Back Square Button.png")
 right_image = pygame.image.load(
-    r"Menu Buttons\Square Buttons\Square Buttons\Next Square Button.png")
+    r"Menu Buttons/Square Buttons/Square Buttons/Next Square Button.png")
 
 
 car_image = pygame.image.load("car.png")
@@ -55,8 +75,8 @@ object_image = pygame.image.load("object.png")
 object_width, object_height = object_image.get_rect().size
 object_image2 = pygame.image.load("object.png")
 object_width, object_height = object_image.get_rect().size
-background = pygame.image.load("background.png").convert()
-screen.blit(background, (100, 100))
+# background = pygame.image.load("background.png").convert()
+# screen.blit(background, (100, 100))
 
 
 kane_image = pygame.image.load("kane.png")
@@ -68,9 +88,11 @@ font = pygame.font.Font(None, 36)
 
 
 currentscreen: str
+music_on = True
 
 
 def menu():
+    screen.blit(background_image, (105, 35))
     if start_button.draw():
         global start_game
         start_game = True
@@ -79,21 +101,40 @@ def menu():
         exit()
 
     if help_button.draw():
-        print("exiting help")
-        exit()
+        print("help")
 
     if control_button.draw():
         global currentscreen
         currentscreen = "controls"
 
     if mute_button.draw():
-        print("Audio has been muted")
+
+        mute_button.toggled = not mute_button.toggled
+
+        if mute_button.toggled:
+            mute_button.image = mute_button_image
+            print("audio is unmuted")
+        else:
+            mute_button.image = muted_button_image
+            print("audio is muted")
+
+    if music_button.draw():
+
+        music_button.toggled = not music_button.toggled
+
+        if music_button.toggled:
+            music_button.image = music_button_image
+            print("music is unmuted")
+        else:
+            music_button.image = music_mute_button_image
+            print("music is muted")
 
     start_game_font = pygame.font.Font(None, 65)
     titletext = start_game_font.render(
         "WELCOME TO ROAD RAGE", True, (100, 150, 255))
 
     screen.blit(titletext, (105, 35))
+
     pygame.display.flip()
 
 
@@ -148,6 +189,7 @@ class Button():
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
         self.clicked = False
+        self.toggled = False
 
     def image_set(self, image):
         width = image.get_width()
@@ -174,8 +216,10 @@ class Button():
                 self.clicked = True
                 action = True
         else:
+
             if self.hoverimage != None:
-                self.image = self.originalimage
+                if self.toggled == False:
+                    self.image = self.originalimage
 
         if pygame.mouse.get_pressed()[0] == 0:
             self.clicked = False
@@ -187,17 +231,25 @@ class Button():
 # Menu Screen
 start_button = Button(265, 100, start_game_button_image,
                       0.4, hoverimage=start_game_hover)
-help_button = Button(265, 188, help_button_image, 0.4)
-control_button = Button(265, 278, control_button_image, 0.4)
-exit_button = Button(265, 365, exit_button_image, 0.4)
-mute_button = Button(10, 10, mute_button_image, 0.4)
-back_button = Button(10, 10, back_button_image, 0.4)
+help_button = Button(263, 278, help_button_image, 0.4,
+                     hoverimage=help_button_hover)
+control_button = Button(265, 188, control_button_image,
+                        0.4, hoverimage=control_button_hover)
+exit_button = Button(265, 365, exit_button_image, 0.4,
+                     hoverimage=exit_button_hover)
+mute_button = Button(344, 278, mute_button_image, 0.4)
+# hoverimage=mute_button_hover)
+back_button = Button(10, 10, back_button_image, 0.4,
+                     hoverimage=back_button_hover)
+music_button = Button(425, 278, music_button_image, 0.4)
+# hoverimage=music_button_hover)
 
 # Control screen
 up_key = Button(550, 200, up_image, 0.4)
 down_key = Button(550, 300, down_image, 0.4)
 left_key = Button(450, 300, left_image, 0.4)
 right_key = Button(650, 300, right_image, 0.4)
+
 
 # Set the game loop
 running = True
@@ -312,7 +364,7 @@ def gameloop():
             object_speed = 12.5
         # Draw the screen
 
-        screen.blit(background, (100, 50))
+        # screen.blit(background, (100, 50))
         screen.fill((255, 255, 255))
         screen.blit(car_image, (car_x, car_y))
         screen.blit(object_image, (object_x, object_y))
