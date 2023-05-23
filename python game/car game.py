@@ -161,9 +161,9 @@ def controls():
     pygame.display.flip()
 
 
-def crashscreen(carbomb_image, car_x, car_y):
+def crashscreen(carbomb_image: pygame.surface.Surface, car_x: int, car_y: int):
     global car_image
-    car_image = carbomb_image
+    car_image = carbomb_image  # type: ignore
     pygame.display.flip()
     pygame.mixer.music.load("car_brake_crash.mp3")
     pygame.mixer.music.set_volume(0.3)
@@ -180,7 +180,7 @@ def crashscreen(carbomb_image, car_x, car_y):
 
 
 class Button():
-    def __init__(self, x, y, image, scale, hoverimage=None):
+    def __init__(self, x: int, y: int, image, scale: float | int, hoverimage: pygame.surface.Surface | None = None):
         width = image.get_width()
         height = image.get_height()
         self.scale = scale
@@ -193,17 +193,17 @@ class Button():
         self.clicked = False
         self.toggled = False
 
-    def image_set(self, image):
+    def image_set(self, image: pygame.surface.Surface):
         width = image.get_width()
         height = image.get_height()
         self._image = pygame.transform.scale(
             image, (int(width * self.scale), int(height * self.scale)))
 
-    def image_get(self):
+    def image_get(self) -> pygame.surface.Surface:
         return self._image
     image = property(image_get, image_set)
 
-    def draw(self):
+    def draw(self) -> bool:
         # draw button on screen
         action = False
 
