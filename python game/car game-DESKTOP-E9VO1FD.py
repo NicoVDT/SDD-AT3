@@ -1,16 +1,15 @@
 import pygame
 import random
 import os
-import math
-import sys 
-#from pygame_emojis import load_emoji
+import math 
+
 
 # Initialize Pygame
 pygame.init()
 
 screen_width = 800
 screen_height = 600
-screen: pygame.Surface = pygame.display.set_mode((screen_width, screen_height))
+screen = pygame.display.set_mode((screen_width, screen_height))
 
 # Set the title of the game
 pygame.display.set_caption("Dodging Game")
@@ -23,15 +22,6 @@ white = (255, 255, 255)
 # Set the clock
 clock = pygame.time.Clock()
 
-
-# Choose the size
-size = (64, 64)
-
-# Load the emoji as a pygame.Surface
-#left = load_emoji('←', size)
-#right = load_emoji('→', size)
-#up = load_emoji('↑', size)
-#down = load_emoji('↓', size)
 # Load the images
 control_button_hover = pygame.image.load(
     "Menu Buttons/Large Buttons/Large Buttons/Controls Button  Hover.png")
@@ -96,12 +86,13 @@ object_width, object_height = object_image.get_rect().size
 # background = pygame.image.load("background.png").convert()
 # screen.blit(background, (100, 100))
 gamebackground_height = gamebackground.get_height()
-tiles = math.ceil(screen_height / gamebackground_height) + 1
+tiles = math.ceil(screen_height / gamebackground_height) +1 
 print(tiles)
-scroll = 0
+scroll = 0 
 
 kane_image = pygame.image.load("kane.png")
 object_width, object_height = object_image.get_rect().size
+
 
 
 # Set the font
@@ -113,22 +104,19 @@ music_on = True
 
 
 def menu():
-    global Audio
     screen.blit(background_image, (0, 0))
-    global currentscreen
     if start_button.draw():
         global start_game
         start_game = True
 
     if exit_button.draw():
-        print("Thanks For Playing!!!")
         exit()
 
     if help_button.draw():
-        currentscreen = "help"
-        print("Help Menu")
+        print("help")
 
     if control_button.draw():
+        global currentscreen
         currentscreen = "controls"
 
     if mute_button.draw():
@@ -138,12 +126,9 @@ def menu():
         if mute_button.toggled:
             mute_button.image = mute_button_image
             print("audio is unmuted")
-            pygame.mixer.unpause()
-
         else:
             mute_button.image = muted_button_image
             print("audio is muted")
-            Audio = False
 
     if music_button.draw():
 
@@ -165,92 +150,55 @@ def menu():
     pygame.display.flip()
 
 
-leftconfig = False
-rightconfig = False
-downconfig = False
-upconfig = False
-
-
-def controls(upuni, downuni, leftuni, rightuni):
-    start_game_font = pygame.font.Font(None, 65)
-    mediumfont = pygame.font.Font(None, 40)
+def controls():
     screen.fill(white)
-    up_arrow = start_game_font.render(upuni, True, (100, 200, 255))
-    down_arrow = start_game_font.render(downuni, True, (100, 200, 255))
-    left_arrow = start_game_font.render(leftuni, True, (100, 200, 255))
-    right_arrow = start_game_font.render(rightuni, True, (100, 200, 255))
-
-    controltext = mediumfont.render(
-        "Your Current Controls", True, (100, 200, 255))
-
+    start_game_font = pygame.font.Font(None, 65)
     control_title = start_game_font.render(
         "Choose your Controls", True, (100, 150, 255))
     if left_key.draw():
-        global leftconfig
-        leftconfig = True
+        try:
+            keys = pygame.key.get_pressed()
+            prefs.left = keys.index(True)
+            print(prefs.left)
+        except ValueError:
+            print("Oops, No key was being held down.")
+            os.popen("showmessage.vbs")
+            print("done")
 
     if right_key.draw():
-        global rightconfig
-        rightconfig = True
+        try:
+            keys = pygame.key.get_pressed()
+            prefs.right = keys.index(True)
+            print(prefs.right)
+        except ValueError:
+            print("Oops, No key was being held down.")
+            os.popen("showmessage.vbs")
+            print("done")
 
     if up_key.draw():
-        global upconfig
-        upconfig = True
+        try:
+            keys = pygame.key.get_pressed()
+            prefs.up = keys.index(True)
+            print(prefs.up)
+        except ValueError:
+            print("Oops, No key was being held down.")
+            os.popen("showmessage.vbs")
+            print("done")
 
     if down_key.draw():
-        global downconfig
-        downconfig = True
+        try:
+            keys = pygame.key.get_pressed()
+            prefs.down = keys.index(True)
+            print(prefs.down)
+        except ValueError:
+            print("Oops, No key was being held down.")
+            os.popen("showmessage.vbs")
+            print("done")
 
     if back_button.draw():
         global currentscreen
         currentscreen = "menu"
-    screen.blit(up_arrow, (98, 260))
-    screen.blit(down_arrow, (100, 300))
-    screen.blit(right_arrow, (130, 300))
-    screen.blit(left_arrow, (70, 300))
     screen.blit(control_title, (150, 35))
-    screen.blit(controltext, (80, 140))
-
-    pygame.display.flip()
-SIZE = WIDTH, HEIGHT = (1024, 720)
-def blit_text(surface, text, pos, font, color=pygame.Color('black')):
-    words = [word.split(' ') for word in text.splitlines()]  # 2D array where each row is a list of words.
-    space = font.size(' ')[0]  # The width of a space.
-    max_width, max_height = surface.get_size()
-    x, y = pos
-    for line in words:
-        for word in line:
-            word_surface = font.render(word, 0, color)
-            word_width, word_height = word_surface.get_size()
-            if x + word_width >= max_width:
-                x = pos[0]  # Reset the x.
-                y += word_height  # Start on new row.
-            surface.blit(word_surface, (x, y))
-            x += word_width + space
-        x = pos[0]  # Reset the x.
-        y += 25  # Start on new row.
-
-
-about_info = "Game Name: Road Rage\nVersion: 1.0\nMade By: Nicholas Van Delft\nDate of release: 12/06/2023"
-instructions_info = "How to Play\nRoad Rage is a simple 2D, birds eye view game\nYou shoot and try to doge obsticales coming towards you.\n"
-
-
-
-def help():
-    screen.fill(white)
-    start_game_font = pygame.font.Font(None, 65)
-    abouttext_font = pygame.font.Font(None, 25)
-    help_title = start_game_font.render(
-        "Help Menu", True, (100, 150, 255))
-    about_info = abouttext_font.render("Game Name: Road Rage\nVersion: 1.0\nMade By: Nicholas Van Delft\n Date of release: 12/06/2023", True, (100, 150, 255))
-    if back_button.draw():
-        global currentscreen
-        currentscreen = "menu"
-    
-    blit_text(screen, about_info, (10, 95), font)
-    blit_text(screen, instructions_info, (270, 95), font)
-    screen.blit(help_title, (270, 35))
-    
     pygame.display.flip()
 
 
@@ -366,46 +314,14 @@ start_game = False
 
 def startloop():
     global start_game
-    global upuni, downuni, leftuni, rightuni
     start_game = False
-    upuni = "up"
-    downuni = "down"
-    leftuni = "left"
-    rightuni = "right"
-
     global currentscreen
     currentscreen = "menu"
-    global leftconfig, rightconfig, upconfig, downconfig
     while not start_game:
         # Handle the events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit()
-            if leftconfig:
-                if event.type == pygame.KEYDOWN:
-                    print(event.dict['key'])
-                    prefs.left = event.dict['key']
-                    leftconfig = False
-                    leftuni = event.dict["unicode"]
-            elif rightconfig:
-                if event.type == pygame.KEYDOWN:
-                    print(event.dict['key'])
-                    prefs.right = event.dict['key']
-                    rightuni = event.dict["unicode"]
-                    rightconfig = False
-            elif downconfig:
-                if event.type == pygame.KEYDOWN:
-                    prefs.down = event.dict['key']
-                    downuni = event.dict["unicode"]
-                    downconfig = False
-                    print(event.dict['key'])
-            elif upconfig:
-                if event.type == pygame.KEYDOWN:
-                    print(event.dict['key'])
-                    upuni = event.dict["unicode"]
-                    prefs.up = event.dict['key']
-                    print(event.dict["unicode"])
-                    upconfig = False
             # if event.type == pygame.MOUSEBUTTONDOWN:
                 # start_game = True
 
@@ -415,9 +331,7 @@ def startloop():
             case "menu":
                 menu()
             case "controls":
-                controls(upuni, downuni, leftuni, rightuni)
-            case "help":
-                help()
+                controls()
 
 
 def gameloop(scroll):
@@ -454,7 +368,7 @@ def gameloop(scroll):
             if event.type == pygame.QUIT:
                 exit()
 
-        # Move the background
+        # Move the background 
 
         # Move the car
         keys = pygame.key.get_pressed()
@@ -464,8 +378,8 @@ def gameloop(scroll):
             car_x += car_speed
         if keys[prefs.up] and car_y > 0:
             car_y -= car_speed
-        # print(f"K_w {pygame.K_w}")
-        # print(f"prefs up {prefs.up}")
+        #print(f"K_w {pygame.K_w}")
+        #print(f"prefs up {prefs.up}")
         if keys[prefs.down] and car_y < screen_height - car_height:
             car_y += car_speed
 
@@ -512,18 +426,15 @@ def gameloop(scroll):
 
         # screen.blit(background, (100, 50))
         screen.fill((255, 255, 255))
-        for i in range(0, tiles):
-            screen.blit(gamebackground,
-                        (0, -i * gamebackground_height + scroll))
-            screen.blit(gamebackground,
-                        (0, i * gamebackground_height + scroll))
-            gamebackgroundrect.y = i * gamebackground_height + scroll
-            # pygame.draw.rect(screen, (255, 0, 0), gamebackgroundrect, 1)
+        for i in range(0,tiles):
+            screen.blit(gamebackground, (0,i * gamebackground_height + scroll))
+            gamebackgroundrect.y = i *gamebackground_height + scroll
+            pygame.draw.rect(screen, (255, 0,0 ), gamebackgroundrect,1)
+            
+        #scroll speed
+        scroll += 5 
 
-        # scroll speed
-        scroll += 4
-
-        # reset scroll
+        #reset scroll
 
         if abs(scroll) > gamebackground_height:
             scroll = 0
@@ -534,11 +445,6 @@ def gameloop(scroll):
         screen.blit(kane_image, (kane_objectx, kane_objecty))
         score_text = font.render("Score: " + str(score), True, (0, 0, 0))
         screen.blit(score_text, (10, 10))
-
-        if Audio == False:
-            pygame.mixer.pause()
-        elif Audio == True:
-            pygame.mixer.unpause
 
         pygame.display.flip()
 
