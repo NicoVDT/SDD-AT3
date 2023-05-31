@@ -231,8 +231,8 @@ def blit_text(surface, text, pos, font, color=pygame.Color('black')):
         y += 25  # Start on new row.
 
 
-about_info = "Game Name: Road Rage\nVersion: 1.0\nMade By: Nicholas Van Delft\nDate of release: 12/06/2023"
-instructions_info = "How to Play\nRoad Rage is a simple 2D, birds eye view game\nYou shoot and try to doge obsticales coming towards you.\n"
+text = "Game Name: Road Rage\nVersion: 1.0\nMade By: Nicholas Van Delft\nDate of release: 12/06/2023"
+instructions_info = "How to Play:\nRoad Rage is a simple top-down 2D game\nYou shoot and try to doge obsticales coming towards you.\nAs you progress through the level doging more obsticales\nThe obsticals will start to multiply and speed up!\n\nIn the control menu you must click the keybind you want to change\nThen you must press the key down on your keyboard\nThe Visual represetation of your keybinds on the left will then change."
 
 
 
@@ -247,8 +247,8 @@ def help():
         global currentscreen
         currentscreen = "menu"
     
-    blit_text(screen, about_info, (10, 95), font)
-    blit_text(screen, instructions_info, (270, 95), font)
+    blit_text(screen, text, (10, 500), font)
+    blit_text(screen, instructions_info, (10,100 ), font)
     screen.blit(help_title, (270, 35))
     
     pygame.display.flip()
@@ -260,7 +260,8 @@ def crashscreen(carbomb_image: pygame.surface.Surface, car_x: int, car_y: int):
     pygame.display.flip()
     pygame.mixer.music.load("car_brake_crash.mp3")
     pygame.mixer.music.set_volume(0.3)
-    pygame.mixer.music.play()
+    if Audio:
+        pygame.mixer.music.play()
     # End game screen
     end_game_font = pygame.font.Font(None, 72)
     end_game_text = end_game_font.render("Game Over", True, (255, 0, 0))
@@ -535,10 +536,6 @@ def gameloop(scroll):
         score_text = font.render("Score: " + str(score), True, (0, 0, 0))
         screen.blit(score_text, (10, 10))
 
-        if Audio == False:
-            pygame.mixer.pause()
-        elif Audio == True:
-            pygame.mixer.unpause
 
         pygame.display.flip()
 
